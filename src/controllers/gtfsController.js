@@ -3,6 +3,10 @@ const Agency = require('../models/Agency');
 const Route = require('../models/Route');
 const Stop = require('../models/Stop');
 const logger = require('../config/logger');
+const City = require('../models/City');
+const DataExporter = require('../generators/DataExporter');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -108,6 +112,49 @@ router.get('/export', async (req, res, next) => {
       });
     }
   } catch (error) {
+    next(error);
+  }
+});
+
+// NEW ENDPOINT: GET /api/gtfs/export-city/:cityId - Exportar datos GTFS para una ciudad específica
+router.get('/export-city/:cityId', async (req, res, next) => {
+  try {
+    const { cityId } = req.params;
+
+    // 1. Find the city
+    const city = await City.findOne({ city_id: cityId });
+    if (!city) {
+      return res.status(404).json({ success: false, message: 'Ciudad no encontrada.' });
+    }
+
+    // 2. Instantiate DataExporter and zip the generated GTFS files
+    const exporter = new DataExporter();
+    const exportResult = await exporter.zipGeneratedGTFS(city.city_name);
+
+    // 3. Send the generated ZIP file as a response
+    if (exportResult.filePath && fs.existsSync(exportResult.filePath)) {
+      res.download(exportResult.filePath, `${city.city_name.replace(/\s+/g, '_')}_gtfs.zip`, (err) => {
+        if (err) {
+          logger.error(`Error al enviar el archivo GTFS ZIP para ${city.city_name}:`, err);
+          // Clean up the generated file if there was an error sending it
+          fs.unlink(exportResult.filePath, (unlinkErr) => {
+            if (unlinkErr) logger.error(`Error al eliminar el archivo temporal: ${exportResult.filePath}`, unlinkErr);
+          });
+          next(err); // Pass error to error handling middleware
+        } else {
+          logger.info(`Archivo GTFS ZIP para ${city.city_name} enviado exitosamente.`);
+          // Clean up the generated file after successful download
+          fs.unlink(exportResult.filePath, (unlinkErr) => {
+            if (unlinkErr) logger.error(`Error al eliminar el archivo temporal: ${exportResult.filePath}`, unlinkErr);
+          });
+        }
+      });
+    } else {
+      res.status(500).json({ success: false, message: 'Error al generar el archivo GTFS ZIP.' });
+    }
+
+  } catch (error) {
+    logger.error('Error en la exportación GTFS por ciudad:', error);
     next(error);
   }
 });

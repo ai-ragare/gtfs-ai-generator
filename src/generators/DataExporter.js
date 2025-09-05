@@ -397,6 +397,43 @@ class DataExporter {
     await csvWriter.writeRecords([feedInfo]);
     return { path: filePath, type: 'feed_info' };
   }
+
+  // NEW METHOD: Zip already generated GTFS files for a city
+  async zipGeneratedGTFS(cityName) {
+    const formattedCityName = cityName.replace(/\s+/g, '_');
+    const inputDir = path.join(process.cwd(), 'generated-gtfs', formattedCityName);
+    const outputZipPath = path.join(inputDir, `${formattedCityName}.zip`);
+
+    if (!fs.existsSync(inputDir)) {
+      throw new Error(`Directorio GTFS para la ciudad '${cityName}' no encontrado: ${inputDir}`);
+    }
+
+    return new Promise((resolve, reject) => {
+      const output = fs.createWriteStream(outputZipPath);
+      const archive = archiver('zip', { zlib: { level: 9 } });
+
+      output.on('close', () => {
+        logger.info(`GTFS ZIP creado para ${cityName}: ${archive.pointer()} bytes`);
+        resolve({
+          filePath: outputZipPath,
+          size: archive.pointer(),
+          cityName: cityName
+        });
+      });
+
+      archive.on('error', (err) => {
+        logger.error(`Error al crear ZIP para ${cityName}:`, err);
+        reject(err);
+      });
+
+      archive.pipe(output);
+
+      // Append files from a directory
+      archive.directory(inputDir, false); // false means don't include the directory itself in the archive
+
+      archive.finalize();
+    });
+  }
 }
 
 module.exports = DataExporter;

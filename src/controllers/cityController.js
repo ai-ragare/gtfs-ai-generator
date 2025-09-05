@@ -304,6 +304,10 @@ async function generateCityInBackground(city, generationRequest, country, timezo
     // Guardar datos en MongoDB
     await saveGTFSDataToMongoDB(gtfsData, city.city_id, generationRequest.request_id);
 
+    // Exportar datos GTFS a archivos .txt
+    await gtfsAgent.exportToGTFS(gtfsData, 'csv');
+    logger.info(`Archivos GTFS exportados a ${process.env.GTFS_OUTPUT_DIR || '/app/generated-gtfs'}/${city.city_name.replace(/\s+/g, '_')}`);
+
     // Actualizar estadísticas de la ciudad
     city.statistics = {
       total_routes: gtfsData.routes.length,
