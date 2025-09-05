@@ -20,15 +20,17 @@ Parámetros de la ciudad:
 - Número de rutas: {numberOfRoutes}
 - Tipos de transporte: {transportTypes}
 - Idioma: {language}
+- País: {country}
+- Zona Horaria: {timezone}
 
 Genera un JSON con la siguiente estructura:
 {{
   "agency": {{
     "agency_name": "Nombre de la empresa de transporte",
     "agency_url": "https://ejemplo.com",
-    "agency_timezone": "America/Mexico_City",
+    "agency_timezone": "{timezone}",
     "agency_lang": "{language}",
-    "agency_phone": "+52-XX-XXXX-XXXX",
+    "agency_phone": "Un número de teléfono de contacto",
     "description": "Descripción de la empresa"
   }},
   "zones": [
@@ -68,7 +70,7 @@ Considera:
 - Puntos de interés relevantes para el transporte público
 - Jerarquía de rutas (principales, secundarias, alimentadoras)
 - Conexiones lógicas entre zonas
-- Nomenclatura local apropiada
+- Nomenclatura local apropiada para el país {country}
     `);
   }
 
@@ -83,7 +85,9 @@ Considera:
         industrialZones: params.industrialZones,
         numberOfRoutes: params.numberOfRoutes,
         transportTypes: JSON.stringify(params.transportTypes),
-        language: params.language || 'es'
+        language: params.language || 'es',
+        country: params.country || 'México',
+        timezone: params.timezone || 'America/Mexico_City'
       });
 
       const response = await this.llm.invoke(prompt);

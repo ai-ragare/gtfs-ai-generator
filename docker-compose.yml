@@ -39,13 +39,11 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
-      NODE_ENV: ${NODE_ENV}
-      PORT: ${PORT}
       MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
       OLLAMA_BASE_URL: http://host.docker.internal:11434
-      OLLAMA_MODEL: ${OLLAMA_MODEL}
       GTFS_OUTPUT_DIR: /app/generated-gtfs
     volumes:
       - ./generated-gtfs:/app/generated-gtfs

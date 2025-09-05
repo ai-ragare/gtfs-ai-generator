@@ -19,7 +19,9 @@ router.post('/generate', async (req, res, next) => {
       operatingHours = { start: '05:00', end: '23:30' },
       touristAreas = false,
       industrialZones = false,
-      language = 'es'
+      language = 'es',
+      country = 'México',
+      timezone = 'America/Mexico_City'
     } = req.body;
 
     // Validar parámetros requeridos
@@ -43,13 +45,17 @@ router.post('/generate', async (req, res, next) => {
         tourist_areas: touristAreas,
         industrial_zones: industrialZones
       },
-      language
+      language,
+      country,
+      timezone
     });
 
     await city.save();
 
     // Crear solicitud de generación
+    const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const generationRequest = new GenerationRequest({
+      request_id: requestId,
       city_id: city.city_id,
       parameters: {
         city_name: cityName,
@@ -68,7 +74,7 @@ router.post('/generate', async (req, res, next) => {
     await generationRequest.save();
 
     // Iniciar generación en background
-    generateCityInBackground(city, generationRequest);
+    generateCityInBackground(city, generationRequest, country, timezone);
 
     res.status(202).json({
       success: true,
@@ -271,7 +277,7 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 // Función para generar ciudad en background
-async function generateCityInBackground(city, generationRequest) {
+async function generateCityInBackground(city, generationRequest, country, timezone) {
   try {
     const gtfsAgent = new GTFSAgent();
     
@@ -290,7 +296,9 @@ async function generateCityInBackground(city, generationRequest) {
       operatingHours: city.generation_parameters.operating_hours,
       touristAreas: city.generation_parameters.tourist_areas,
       industrialZones: city.generation_parameters.industrial_zones,
-      language: city.language
+      language: city.language,
+      country,
+      timezone
     });
 
     // Guardar datos en MongoDB
@@ -326,6 +334,7 @@ async function saveGTFSDataToMongoDB(gtfsData, cityId, requestId) {
   if (gtfsData.agency) {
     const agency = new Agency({
       ...gtfsData.agency,
+      agency_id: `agency_${Date.now()}`,
       city_id: cityId,
       generation_request_id: requestId
     });
