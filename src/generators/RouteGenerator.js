@@ -62,7 +62,7 @@ Considera:
 - Rutas que conecten zonas lógicamente
 - Frecuencias apropiadas según tipo de ruta y zona
 - Nombres de rutas coherentes con la cultura local
-- Colores distintivos para cada ruta
+- Colores distintivos para cada ruta en formato hexadecimal de 6 dígitos (ej: FF0000 para rojo)
 - Paradas estratégicas en puntos de interés
 - Horarios realistas según demanda
     `);
@@ -107,6 +107,10 @@ Considera:
     }
   }
 
+  isValidHexColor(color) {
+    return typeof color === 'string' && /^[0-9A-Fa-f]{6}$/.test(color);
+  }
+
   processRoutes(routes, cityLayout, coordinates) {
     return routes.map((route, index) => ({
       route_id: route.route_id || `route_${index + 1}`,
@@ -116,8 +120,8 @@ Considera:
       route_desc: route.route_desc || `Ruta de transporte público`,
       route_type: this.getRouteType(route.route_type),
       route_url: route.route_url || '',
-      route_color: route.route_color || this.generateRouteColor(index),
-      route_text_color: route.route_text_color || 'FFFFFF',
+      route_color: this.isValidHexColor(route.route_color) ? route.route_color : this.generateRouteColor(index),
+      route_text_color: this.isValidHexColor(route.route_text_color) ? route.route_text_color : 'FFFFFF',
       stops: route.stops || this.assignStopsToRoute(coordinates.stops, index),
       shape_id: route.shape_id || `shape_${index + 1}`,
       frequency_minutes: route.frequency_minutes || 10,
