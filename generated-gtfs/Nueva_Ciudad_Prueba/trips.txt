@@ -1,0 +1,6 @@
+route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible
+route_1,service_weekday,trip_1,Centro,,0,block_1,shape_1,0
+route_1,service_weekday,trip_2,Centro,,0,block_2,shape_1,0
+route_2,service_weekday,trip_3,Oeste,,0,block_1,shape_2,0
+route_3,service_weekday,trip_4,Norte,,0,block_1,shape_3,0
+route_4,service_weekday,trip_5,Sur,,0,block_1,shape_4,0

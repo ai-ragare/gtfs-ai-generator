@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,default_start_date,default_end_date,feed_version,feed_contact_email,feed_contact_url
+Transporte Urbano NCP,https://transportenuvancp.es,es,20240101,20241231,1.0-2025-09-05,,https://transportenuvancp.es

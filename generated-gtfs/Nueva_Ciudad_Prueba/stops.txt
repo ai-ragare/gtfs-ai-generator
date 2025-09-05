@@ -1,0 +1,36 @@
+stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station,stop_timezone,wheelchair_boarding
+stop_zone_central_1,ZONE_CENTRAL01,Parada Centro Histórico y Comercial 1,Parada en Centro Histórico y Comercial,19.430204,-99.123064,zone_central,,0,,,1
+stop_zone_central_2,ZONE_CENTRAL02,Estación Centro Histórico y Comercial 2,Parada en Centro Histórico y Comercial,19.42961,-99.115135,zone_central,,0,,,0
+stop_zone_central_3,ZONE_CENTRAL03,Terminal Centro Histórico y Comercial 3,Parada en Centro Histórico y Comercial,19.42894,-99.120751,zone_central,,0,,,1
+stop_zone_central_4,ZONE_CENTRAL04,Centro Centro Histórico y Comercial 4,Parada en Centro Histórico y Comercial,19.434352,-99.111019,zone_central,,0,,,1
+stop_zone_central_5,ZONE_CENTRAL05,Parada Centro Histórico y Comercial 5,Parada en Centro Histórico y Comercial,19.435595,-99.125309,zone_central,,0,,,0
+stop_zone_central_6,ZONE_CENTRAL06,Estación Centro Histórico y Comercial 6,Parada en Centro Histórico y Comercial,19.427043,-99.119872,zone_central,,0,,,1
+stop_zone_central_7,ZONE_CENTRAL07,Terminal Centro Histórico y Comercial 7,Parada en Centro Histórico y Comercial,19.429888,-99.12406,zone_central,,0,,,0
+stop_zone_central_8,ZONE_CENTRAL08,Centro Centro Histórico y Comercial 8,Parada en Centro Histórico y Comercial,19.436886,-99.118038,zone_central,,0,,,1
+stop_zone_central_9,ZONE_CENTRAL09,Parada Centro Histórico y Comercial 9,Parada en Centro Histórico y Comercial,19.436455,-99.113754,zone_central,,0,,,1
+stop_zone_central_10,ZONE_CENTRAL10,Estación Centro Histórico y Comercial 10,Parada en Centro Histórico y Comercial,19.431438,-99.124961,zone_central,,0,,,1
+stop_zone_norte_1,ZONE_NORTE01,Parada Barrios Norteños 1,Parada en Barrios Norteños,19.477571,-99.099818,zone_norte,,0,,,0
+stop_zone_norte_2,ZONE_NORTE02,Estación Barrios Norteños 2,Parada en Barrios Norteños,19.478128,-99.103858,zone_norte,,0,,,1
+stop_zone_norte_3,ZONE_NORTE03,Terminal Barrios Norteños 3,Parada en Barrios Norteños,19.47916,-99.104905,zone_norte,,0,,,1
+stop_zone_norte_4,ZONE_NORTE04,Centro Barrios Norteños 4,Parada en Barrios Norteños,19.484737,-99.095907,zone_norte,,0,,,1
+stop_zone_norte_5,ZONE_NORTE05,Parada Barrios Norteños 5,Parada en Barrios Norteños,19.482028,-99.104841,zone_norte,,0,,,1
+stop_zone_norte_6,ZONE_NORTE06,Estación Barrios Norteños 6,Parada en Barrios Norteños,19.472901,-99.100499,zone_norte,,0,,,1
+stop_zone_norte_7,ZONE_NORTE07,Terminal Barrios Norteños 7,Parada en Barrios Norteños,19.481032,-99.104356,zone_norte,,0,,,1
+stop_zone_norte_8,ZONE_NORTE08,Centro Barrios Norteños 8,Parada en Barrios Norteños,19.475183,-99.096592,zone_norte,,0,,,1
+stop_zone_norte_9,ZONE_NORTE09,Parada Barrios Norteños 9,Parada en Barrios Norteños,19.476217,-99.102254,zone_norte,,0,,,1
+stop_zone_sur_1,ZONE_SUR01,Parada Barrios Sureños 1,Parada en Barrios Sureños,19.397804,-99.173023,zone_sur,,0,,,0
+stop_zone_sur_2,ZONE_SUR02,Estación Barrios Sureños 2,Parada en Barrios Sureños,19.408961,-99.178802,zone_sur,,0,,,1
+stop_zone_sur_3,ZONE_SUR03,Terminal Barrios Sureños 3,Parada en Barrios Sureños,19.410061,-99.179831,zone_sur,,0,,,1
+stop_zone_sur_4,ZONE_SUR04,Centro Barrios Sureños 4,Parada en Barrios Sureños,19.409276,-99.175631,zone_sur,,0,,,1
+stop_zone_sur_5,ZONE_SUR05,Parada Barrios Sureños 5,Parada en Barrios Sureños,19.403283,-99.170893,zone_sur,,0,,,1
+stop_zone_sur_6,ZONE_SUR06,Estación Barrios Sureños 6,Parada en Barrios Sureños,19.39883,-99.17603,zone_sur,,0,,,1
+stop_poi_central,POI_CENTRAL,Estación Central de Nueva Ciudad Prueba,Estación principal de transporte con conexión a la red de autobuses,19.438688,-99.129913,zone_central,,1,,,1
+stop_poi_norte,POI_NORTE,Parque Norte,Parque público con áreas de recreación y ejercicio,19.428185,-99.136739,zone_norte,,0,,,1
+stop_poi_sur,POI_SUR,Puerto Exterior,Puerto exterior para contenedores y carga pesada,19.432922,-99.131481,zone_sur,,0,,,1
+stop_additional_29,ADD029,Parada 29,Parada adicional de la red,19.442007,-99.102001,zone_mixed,,0,,,0
+stop_additional_30,ADD030,Parada 30,Parada adicional de la red,19.428319,-99.135508,zone_mixed,,0,,,1
+stop_additional_31,ADD031,Parada 31,Parada adicional de la red,19.428815,-99.192098,zone_mixed,,0,,,0
+stop_additional_32,ADD032,Parada 32,Parada adicional de la red,19.419174,-99.172864,zone_mixed,,0,,,1
+stop_additional_33,ADD033,Parada 33,Parada adicional de la red,19.445218,-99.10654,zone_mixed,,0,,,1
+stop_additional_34,ADD034,Parada 34,Parada adicional de la red,19.421955,-99.168057,zone_mixed,,0,,,0
+stop_additional_35,ADD035,Parada 35,Parada adicional de la red,19.405501,-99.096244,zone_mixed,,0,,,1
