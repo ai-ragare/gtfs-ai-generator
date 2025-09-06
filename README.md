@@ -16,6 +16,15 @@ GTFS (General Transit Feed Specification) es un estándar abierto que define có
 - **Generación coherente**: Datos que siguen patrones urbanos reales
 - **Personalizable**: Parámetros ajustables para diferentes tipos de ciudades
 
+### 🗺️ **Integración con OpenStreetMap (NUEVO)**
+- **Rutas reales**: Shapes que siguen calles existentes usando OSRM
+- **Geocoding avanzado**: Conversión de direcciones a coordenadas con múltiples candidatos
+- **Score de confianza**: Algoritmo inteligente para evaluar precisión de resultados
+- **Búsqueda con filtros**: Geocoding con filtros por país, tipo de lugar, etc.
+- **Routing inteligente**: Cálculo de rutas óptimas entre puntos
+- **IA híbrida**: Combina datos reales de OSM con lógica de IA
+- **Shapes GTFS**: Generación de geometrías compatibles con estándares
+
 ### 🏙️ **Generación Realista de Ciudades**
 - **Layout urbano inteligente**: Zonas comerciales, residenciales, industriales
 - **Puntos de interés**: Estaciones, hospitales, universidades, centros comerciales
@@ -46,6 +55,7 @@ GTFS (General Transit Feed Specification) es un estándar abierto que define có
 - **Consulta**: Acceder a datos específicos
 - **Exportación**: Descargar archivos GTFS listos para usar
 - **Administración**: Gestionar ciudades y solicitudes
+- **OSM Integration**: Endpoints para rutas realistas con OpenStreetMap
 
 ### 📁 **Exportación GTFS Estándar**
 - **Archivos CSV**: Compatibles con cualquier herramienta GTFS
@@ -118,7 +128,9 @@ gtfs-ai-generator/
 │   │   ├── ScheduleGenerator.js     # Generador de horarios realistas
 │   │   ├── CoordinateGenerator.js   # Generador de geografía coherente
 │   │   └── DataExporter.js          # Exportador a formato GTFS
-│   └── 📂 services/                 # Servicios de negocio (futuro)
+│   ├── 📂 services/                 # Servicios de negocio
+│   │   ├── osmService.js            # Integración con OpenStreetMap
+│   │   └── shapeGenerator.js        # Generador híbrido IA + OSM
 ├── 📂 scripts/                      # Scripts de utilidad y administración
 │   ├── dev-setup.ps1                # Configuración automática de desarrollo
 │   ├── init-ollama.sh               # Inicialización de modelos Ollama
@@ -192,6 +204,14 @@ OLLAMA_MAX_TOKENS=4000
 
 # ===== OPCIONAL: OPENAI COMO RESPALDO =====
 OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# ===== INTEGRACIÓN OPENSTREETMAP =====
+OSRM_BASE_URL=http://router.project-osrm.org
+NOMINATIM_BASE_URL=https://nominatim.openstreetmap.org
+OSM_USER_AGENT=gtfs-ai-generator/1.0
+DEFAULT_ROUTING_PROFILE=driving
+MAX_WAYPOINTS=25
+ROUTING_TIMEOUT=30000
 ```
 
 ### 🐳 Instalación con Docker (Recomendado)
@@ -451,6 +471,80 @@ Content-Type: application/json
 }
 ```
 
+### 🗺️ **Integración OpenStreetMap (NUEVO)**
+
+#### **Generar Ruta Realista**
+```http
+POST /api/osm/generate-realistic-route
+Content-Type: application/json
+
+{
+  "origin": "Valencia, Estación Central",
+  "destination": "Gandía, Estación de Tren",
+  "intermediateStops": ["Alzira Centro", "Sueca Ayuntamiento"],
+  "frequency": 30,
+  "serviceHours": {
+    "start": "06:00",
+    "end": "22:00"
+  },
+  "transportType": "bus",
+  "route_short_name": "L1",
+  "route_long_name": "Valencia - Gandía",
+  "capacity": 50
+}
+```
+
+#### **Mejorar Ruta Existente**
+```http
+POST /api/osm/improve-route/route_123
+Content-Type: application/json
+
+{
+  "route_id": "route_123",
+  "stops": [
+    {
+      "stop_id": "stop_1",
+      "stop_lat": 40.4168,
+      "stop_lon": -3.7038
+    }
+  ]
+}
+```
+
+#### **Geocoding y Routing**
+```http
+# Geocoding simple
+GET /api/osm/geocode?address=Madrid, España
+
+# Geocoding con múltiples candidatos (NUEVO)
+GET /api/osm/geocode-candidates?address=Valencia&limit=5
+
+# Búsqueda avanzada con filtros (NUEVO)
+POST /api/osm/advanced-search
+{
+  "query": "estación central",
+  "filters": {
+    "limit": 5,
+    "country": "es"
+  }
+}
+
+# Reverse Geocoding
+GET /api/osm/reverse-geocode?lat=40.4168&lon=-3.7038
+
+# Calcular ruta
+POST /api/osm/route
+{
+  "coordinates": [
+    { "lat": 40.4168, "lon": -3.7038 },
+    { "lat": 40.4200, "lon": -3.7100 }
+  ]
+}
+
+# Health Check OSM
+GET /api/osm/health
+```
+
 ### 📋 **Parámetros de Generación**
 
 | Parámetro | Tipo | Descripción | Valores |
@@ -536,6 +630,38 @@ curl "http://localhost:3000/api/cities/city_1234567890/export?format=zip" -o ciu
 
 # Exportar datos como CSV
 curl "http://localhost:3000/api/gtfs/export?format=csv" -o datos.csv
+```
+
+### 🗺️ **Usar Integración OSM**
+
+```bash
+# Generar ruta realista
+curl -X POST http://localhost:3000/api/osm/generate-realistic-route \
+  -H "Content-Type: application/json" \
+  -d '{
+    "origin": "Valencia, Estación Central",
+    "destination": "Gandía, Estación de Tren",
+    "intermediateStops": ["Alzira Centro", "Sueca Ayuntamiento"],
+    "frequency": 30,
+    "transportType": "bus"
+  }'
+
+# Geocodificar dirección simple
+curl "http://localhost:3000/api/osm/geocode?address=Madrid, España"
+
+# Geocodificar con múltiples candidatos (NUEVO)
+curl "http://localhost:3000/api/osm/geocode-candidates?address=Valencia&limit=5"
+
+# Búsqueda avanzada con filtros (NUEVO)
+curl -X POST http://localhost:3000/api/osm/advanced-search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "estación central",
+    "filters": {"limit": 5, "country": "es"}
+  }'
+
+# Verificar salud de servicios OSM
+curl http://localhost:3000/api/osm/health
 ```
 
 ## 🗄️ Estructura de la Base de Datos
@@ -790,6 +916,44 @@ SOFTWARE.
 ```
 
 ## 🚀 Roadmap
+
+### 🆕 **Nuevas Funcionalidades OSM (v1.1)**
+
+#### **🗺️ Geocoding Avanzado**
+- **Múltiples candidatos**: Obtén varios resultados para elegir el más apropiado
+- **Score de confianza**: Algoritmo inteligente que evalúa la precisión (0-100%)
+- **Ordenamiento inteligente**: Resultados ordenados por relevancia y confianza
+- **Información detallada**: Cada candidato incluye tipo, clase, dirección completa
+
+#### **🔍 Búsqueda con Filtros**
+- **Filtros por país**: Limita resultados a países específicos
+- **Límite configurable**: Controla el número de resultados (1-50)
+- **Tipos de lugar**: Filtra por tipo de ubicación (administrativo, amenidad, etc.)
+- **Búsqueda geográfica**: Filtros por área geográfica específica
+
+#### **📊 Ejemplo de Respuesta Mejorada**
+```json
+{
+  "success": true,
+  "data": {
+    "query": "Valencia",
+    "candidates": [
+      {
+        "rank": 1,
+        "lat": 39.4697065,
+        "lon": -0.3763353,
+        "display_name": "València, Comarca de València, València / Valencia, Comunitat Valenciana, España",
+        "confidence": 0.716,
+        "importance": 0.720,
+        "type": "administrative",
+        "class": "boundary"
+      }
+    ],
+    "total": 5,
+    "best_match": { ... }
+  }
+}
+```
 
 ### 🎯 **Próximas Características**
 

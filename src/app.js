@@ -13,6 +13,8 @@ const errorHandler = require('./config/errorHandler');
 const cityRoutes = require('./controllers/cityController');
 const gtfsRoutes = require('./controllers/gtfsController');
 const generationRoutes = require('./controllers/generationController');
+const OSMController = require('./controllers/osmController');
+const osmController = new OSMController();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -76,6 +78,19 @@ app.use('/api/cities', cityRoutes);
 app.use('/api/generate', generationRoutes);
 app.use('/api/gtfs', gtfsRoutes);
 
+// Rutas OSM
+app.post('/api/osm/generate-realistic-route', osmController.generateRealisticRoute.bind(osmController));
+app.post('/api/osm/improve-route/:routeId', osmController.improveRoute.bind(osmController));
+app.post('/api/osm/validate-route', osmController.validateRoute.bind(osmController));
+app.post('/api/osm/generate-city-realistic', osmController.generateCityRealistic.bind(osmController));
+app.get('/api/osm/geocode', osmController.geocode.bind(osmController));
+app.get('/api/osm/geocode-candidates', osmController.geocodeCandidates.bind(osmController));
+app.post('/api/osm/advanced-search', osmController.advancedSearch.bind(osmController));
+app.get('/api/osm/reverse-geocode', osmController.reverseGeocode.bind(osmController));
+app.post('/api/osm/route', osmController.calculateRoute.bind(osmController));
+app.get('/api/osm/nearby-poi', osmController.findNearbyPOI.bind(osmController));
+app.get('/api/osm/health', osmController.healthCheck.bind(osmController));
+
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -97,7 +112,18 @@ app.use('*', (req, res) => {
       'GET /api/gtfs/agencies',
       'GET /api/gtfs/routes',
       'GET /api/gtfs/stops',
-      'GET /api/gtfs/export'
+      'GET /api/gtfs/export',
+      'POST /api/osm/generate-realistic-route',
+      'POST /api/osm/improve-route/:routeId',
+      'POST /api/osm/validate-route',
+      'POST /api/osm/generate-city-realistic',
+      'GET /api/osm/geocode',
+      'GET /api/osm/geocode-candidates',
+      'POST /api/osm/advanced-search',
+      'GET /api/osm/reverse-geocode',
+      'POST /api/osm/route',
+      'GET /api/osm/nearby-poi',
+      'GET /api/osm/health'
     ]
   });
 });

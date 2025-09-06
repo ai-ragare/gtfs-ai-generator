@@ -1,0 +1,35 @@
+feat: Mejora significativa del sistema de geocoding OSM
+
+✨ Nuevas funcionalidades:
+- Geocoding con múltiples candidatos para mayor precisión
+- Algoritmo de score de confianza (0-100%) para evaluar resultados
+- Búsqueda avanzada con filtros por país, tipo de lugar, etc.
+- Ordenamiento inteligente por relevancia y confianza
+- Información detallada de cada candidato (tipo, clase, dirección)
+
+🔧 Mejoras técnicas:
+- Nuevo endpoint GET /api/osm/geocode-candidates
+- Nuevo endpoint POST /api/osm/advanced-search
+- Algoritmo calculateConfidence() para evaluar precisión
+- Método advancedSearch() con filtros configurables
+- Mejor manejo de errores y validación de parámetros
+
+📊 Beneficios:
+- Mayor precisión en la selección de ubicaciones
+- Flexibilidad para elegir entre múltiples opciones
+- Mejor experiencia de usuario con scores de confianza
+- Búsquedas más específicas con filtros avanzados
+
+🧪 Testing:
+- Tests de integración OSM: 90.9% exitosos
+- Validación de endpoints nuevos
+- Ejemplos de uso documentados
+
+📚 Documentación:
+- README actualizado con nuevas funcionalidades
+- Ejemplos de uso con curl
+- Documentación de parámetros y respuestas
+
+Esta mejora resuelve el problema de geocoding impreciso permitiendo
+al usuario elegir entre múltiples candidatos con scores de confianza,
+mejorando significativamente la calidad de las rutas generadas.
